@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  reward-service-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: reward-service-api
+    restart: unless-stopped
+    depends_on:
+      - mysql-database
+    env_file:
+      - .env
+    environment:
+      TYPEORM_HOST: mysql-database
+      TYPEORM_PORT: 3306
+      TYPEORM_USERNAME: root
+      TYPEORM_PASSWORD: password
+      TYPEORM_DATABASE: player
+    ports:
+      - 3000:3000
+
+  mysql-database:
+    image: mysql
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      # MYSQL_USER: root
+      MYSQL_DATABASE: player
+    ports:
+      - 3307:3306
+    volumes:
+      - .data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql-database
+    environment:
+      PMA_HOST: mysql-database
+    ports:
+      - 8080:80
