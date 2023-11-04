@@ -12,7 +12,7 @@ import {
   REWARD_DAILY_LIMIT_REACHED,
   REWARD_NOT_FOUND,
   REWARD_TOTAL_LIMIT_REACHED,
-} from 'src/errors';
+} from '../../errors';
 
 @Injectable()
 export class RewardService {

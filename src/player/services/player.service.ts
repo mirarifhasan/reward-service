@@ -2,6 +2,7 @@ import {
   Injectable,
   NotAcceptableException,
   NotFoundException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { PlayerRepository } from '../repositories/player.repository';
 import { CreatePlayerDto } from '../dto/create-player.dto';
@@ -10,7 +11,7 @@ import {
   PLAYER_CAMPAIGN_LIMIT_REACHED,
   PLAYER_DAILY_LIMIT_REACHED,
   PLAYER_NOT_FOUND,
-} from 'src/errors';
+} from '../../errors';
 
 @Injectable()
 export class PlayerService {
@@ -35,6 +36,10 @@ export class PlayerService {
   }
 
   checkPlayerEligibleForRedeemOrThrow(player: Player): boolean {
+    if (!player.hasOwnProperty('playerCoupons') || !player.playerCoupons) {
+      throw new UnprocessableEntityException();
+    }
+
     // Check if player reached campaign limit
     if (player.playerCoupons.length >= this.PLAYER_CAMPAIGN_REWARD_LIMIT) {
       throw new NotAcceptableException(PLAYER_CAMPAIGN_LIMIT_REACHED);
