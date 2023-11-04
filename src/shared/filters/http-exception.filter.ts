@@ -21,14 +21,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       return response.status(statusCode).json({
         status_code: statusCode,
         message: message,
-        error: [error],
+        errors: [error],
         data: null,
       });
     } catch (error) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         status_code: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Failed to process the request',
-        error: [exception.message],
+        errors: [exception.message],
         data: null,
       });
     }
