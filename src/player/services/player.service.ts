@@ -6,6 +6,11 @@ import {
 import { PlayerRepository } from '../repositories/player.repository';
 import { CreatePlayerDto } from '../dto/create-player.dto';
 import { Player } from '../entities/player.entity';
+import {
+  PLAYER_CAMPAIGN_LIMIT_REACHED,
+  PLAYER_DAILY_LIMIT_REACHED,
+  PLAYER_NOT_FOUND,
+} from 'src/errors';
 
 @Injectable()
 export class PlayerService {
@@ -24,7 +29,7 @@ export class PlayerService {
       relations: ['playerCoupons'],
     });
 
-    if (!player) throw new NotFoundException('Player not found');
+    if (!player) throw new NotFoundException(PLAYER_NOT_FOUND);
 
     return player;
   }
@@ -32,9 +37,7 @@ export class PlayerService {
   checkPlayerEligibleForRedeemOrThrow(player: Player): boolean {
     // Check if player reached campaign limit
     if (player.playerCoupons.length >= this.PLAYER_CAMPAIGN_REWARD_LIMIT) {
-      throw new NotAcceptableException(
-        'Campaign limit reached for this player',
-      );
+      throw new NotAcceptableException(PLAYER_CAMPAIGN_LIMIT_REACHED);
     }
 
     // Check if player reached daily limit
@@ -48,7 +51,7 @@ export class PlayerService {
     );
 
     if (playerCouponsToday.length >= this.PLAYER_DAILY_REWARD_LIMIT) {
-      throw new NotAcceptableException('Daily limit reached for this player');
+      throw new NotAcceptableException(PLAYER_DAILY_LIMIT_REACHED);
     }
 
     return true;

@@ -10,6 +10,7 @@ import { PlayerCoupon } from '../entities/player-coupon.entity';
 import { Reward } from '../entities/reward.entity';
 import { plainToInstance } from 'class-transformer';
 import { CouponRedeemOutputDto } from '../dto/coupon-redeem-output.dto';
+import { COUPON_NOT_AVAILABLE } from 'src/errors';
 
 @Injectable()
 export class CouponService {
@@ -58,7 +59,7 @@ export class CouponService {
     );
 
     if (availableCouponIndex === -1) {
-      throw new NotFoundException('No available coupon found');
+      throw new NotFoundException(COUPON_NOT_AVAILABLE);
     }
 
     return rewardWithCoupons.coupons[availableCouponIndex];

@@ -1,24 +1,22 @@
 import {
-  Inject,
   Injectable,
   NotAcceptableException,
   NotFoundException,
-  forwardRef,
 } from '@nestjs/common';
 import { RewardRepository } from '../repositories/reward.repository';
 import { CreateRewardDto } from '../dto/create-reward.dto';
 import { Reward } from '../entities/reward.entity';
 import { LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
-import { CouponService } from './coupon.service';
 import { PlayerCoupon } from '../entities/player-coupon.entity';
+import {
+  REWARD_DAILY_LIMIT_REACHED,
+  REWARD_NOT_FOUND,
+  REWARD_TOTAL_LIMIT_REACHED,
+} from 'src/errors';
 
 @Injectable()
 export class RewardService {
-  constructor(
-    private rewardRepository: RewardRepository,
-    @Inject(forwardRef(() => CouponService))
-    private couponService: CouponService,
-  ) {}
+  constructor(private rewardRepository: RewardRepository) {}
 
   async createReward(rewardDto: CreateRewardDto): Promise<Reward> {
     return await this.rewardRepository.save(rewardDto);
@@ -37,7 +35,7 @@ export class RewardService {
     });
 
     if (!rewardWithCoupons) {
-      throw new NotFoundException('Reward not found');
+      throw new NotFoundException(REWARD_NOT_FOUND);
     }
 
     return rewardWithCoupons;
@@ -49,7 +47,7 @@ export class RewardService {
   ): Promise<boolean> {
     // Check if reward reached campaign limit
     if (playerCoupons.length >= rewardWithCoupons.totalLimit) {
-      throw new NotAcceptableException('Total limit reached for this reward');
+      throw new NotAcceptableException(REWARD_TOTAL_LIMIT_REACHED);
     }
 
     // Check reward reached daily limit
@@ -62,7 +60,7 @@ export class RewardService {
     );
 
     if (todayCoupons.length >= rewardWithCoupons.perDayLimit) {
-      throw new NotAcceptableException('Daily limit reached for this reward');
+      throw new NotAcceptableException(REWARD_DAILY_LIMIT_REACHED);
     }
 
     return true;
