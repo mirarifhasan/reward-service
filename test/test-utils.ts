@@ -1,3 +1,4 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { CreateRewardDto } from '../src/coupon/dto/create-reward.dto';
 import { Coupon } from '../src/coupon/entities/coupon.entity';
 import { Reward } from '../src/coupon/entities/reward.entity';
@@ -9,7 +10,7 @@ const campaignStartOn = new Date();
 campaignStartOn.setHours(0, 0, 0, 0);
 const campaignEndOn = new Date(campaignStartOn);
 campaignEndOn.setDate(campaignStartOn.getDate() + 7);
-export const rewardObjs: CreateRewardDto[] = [
+const rewardObjs: CreateRewardDto[] = [
   {
     name: 'Airline ticket',
     startDate: campaignStartOn,
@@ -47,41 +48,35 @@ export const rewardObjs: CreateRewardDto[] = [
   },
 ];
 
-const TEST_DB_CONNECTION_NAME = 'e2e_test_connection';
-export const TEST_DB_NAME = 'e2e_test_db';
+export const dbConnectionConfig = {
+  host: 'localhost',
+  port: 3307,
+  username: 'root',
+  password: 'password',
+  database: 'e2e_test_db',
+};
 
 export const resetDBBeforeTest = async (): Promise<void> => {
-  // This overwrites the DB_NAME used in the SharedModule's TypeORM init.
-  // All the tests will run against the e2e db due to this overwrite.
-  process.env.TYPEORM_DATABASE = TEST_DB_NAME;
-
-  console.log(`Dropping ${TEST_DB_NAME} database and recreating it`);
+  console.log(
+    `Dropping ${dbConnectionConfig.database} database and recreating it`,
+  );
   const appDataSource = new DataSource({
-    name: TEST_DB_CONNECTION_NAME,
     type: 'mysql',
-    host: 'localhost',
-    port: 3307,
-    username: 'root',
-    password: 'password',
+    ...dbConnectionConfig,
   });
   await appDataSource.initialize();
-
-  await appDataSource.query(`drop database if exists ${TEST_DB_NAME}`);
-  await appDataSource.query(`create database ${TEST_DB_NAME}`);
-
+  await appDataSource.query(
+    `drop database if exists ${dbConnectionConfig.database}`,
+  );
+  await appDataSource.query(`create database ${dbConnectionConfig.database}`);
   await appDataSource.destroy();
 };
 
 export const createDBEntitiesAndSeed = async (): Promise<void> => {
-  console.log(`Creating entities in ${TEST_DB_NAME} database`);
+  console.log(`Creating entities in ${dbConnectionConfig.database} database`);
   const appDataSource = new DataSource({
-    name: TEST_DB_CONNECTION_NAME,
     type: 'mysql',
-    host: 'localhost',
-    port: 3307,
-    username: 'root',
-    password: 'password',
-    database: TEST_DB_NAME,
+    ...dbConnectionConfig,
     entities: [__dirname + '/../src/**/*.entity{.ts,.js}'],
     migrations: [path.join(__dirname + '/../migrations/*{.ts,.js}')],
     synchronize: false,
@@ -90,7 +85,7 @@ export const createDBEntitiesAndSeed = async (): Promise<void> => {
   await appDataSource.runMigrations();
 
   // Seed the database
-  console.log(`Seeding ${TEST_DB_NAME} database`);
+  console.log(`Seeding ${dbConnectionConfig.database} database`);
   await seedDatabaseForE2E(appDataSource);
 
   await appDataSource.destroy();

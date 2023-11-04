@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
-  TEST_DB_NAME,
   createDBEntitiesAndSeed,
+  dbConnectionConfig,
   resetDBBeforeTest,
 } from '../test-utils';
 import * as request from 'supertest';
@@ -34,11 +34,7 @@ describe('CouponController (e2e)', () => {
         CouponModule,
         TypeOrmModule.forRoot({
           type: 'mysql',
-          host: 'localhost',
-          port: 3307,
-          username: 'root',
-          password: 'password',
-          database: TEST_DB_NAME,
+          ...dbConnectionConfig,
           entities: [Player, Reward, Coupon, PlayerCoupon],
           synchronize: false,
         }),
