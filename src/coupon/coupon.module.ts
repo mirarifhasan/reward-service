@@ -9,7 +9,7 @@ import { CouponRepository } from './repositories/coupon.repository';
 import { PlayerCouponRepository } from './repositories/player-coupon.repository';
 import { RewardRepository } from './repositories/reward.repository';
 import { RewardService } from './services/reward.service';
-import { PlayerModule } from 'src/player/player.module';
+import { PlayerModule } from '../player/player.module';
 
 @Module({
   imports: [

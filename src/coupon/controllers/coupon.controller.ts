@@ -14,13 +14,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { CouponRedeemInputDto } from '../dto/coupon-redeem-input.dto';
-import { ResponseInterceptor } from 'src/shared/interceptors/response.interceptor';
+import { ResponseInterceptor } from '../../shared/interceptors/response.interceptor';
 import { CouponRedeemOutputDto } from '../dto/coupon-redeem-output.dto';
 import {
   BaseApiResponse,
   SwaggerBaseApiErrorResponse,
   SwaggerBaseApiResponse,
-} from 'src/shared/dto/base-api-response.dto';
+} from '../../shared/dto/base-api-response.dto';
 
 @ApiTags('Coupon')
 @Controller({ path: 'coupon', version: '1' })

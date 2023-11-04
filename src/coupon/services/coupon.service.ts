@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CouponRepository } from '../repositories/coupon.repository';
 import { RewardService } from './reward.service';
 import { CouponRedeemInputDto } from '../dto/coupon-redeem-input.dto';
-import { PlayerService } from 'src/player/services/player.service';
+import { PlayerService } from '../../player/services/player.service';
 import { PlayerCouponRepository } from '../repositories/player-coupon.repository';
 import { Coupon } from '../entities/coupon.entity';
 import { In } from 'typeorm';
@@ -10,7 +10,7 @@ import { PlayerCoupon } from '../entities/player-coupon.entity';
 import { Reward } from '../entities/reward.entity';
 import { plainToInstance } from 'class-transformer';
 import { CouponRedeemOutputDto } from '../dto/coupon-redeem-output.dto';
-import { COUPON_NOT_AVAILABLE } from 'src/errors';
+import { COUPON_NOT_AVAILABLE } from '../../errors';
 
 @Injectable()
 export class CouponService {
