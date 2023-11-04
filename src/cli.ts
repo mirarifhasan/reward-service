@@ -4,6 +4,7 @@ import { PlayerService } from './player/services/player.service';
 import { RewardService } from './coupon/services/reward.service';
 import { CreateRewardDto } from './coupon/dto/create-reward.dto';
 import { CouponService } from './coupon/services/coupon.service';
+import { INestApplicationContext } from '@nestjs/common';
 
 const campaignStartOn = new Date();
 campaignStartOn.setHours(0, 0, 0, 0);
@@ -17,7 +18,7 @@ const rewardObjs: CreateRewardDto[] = [
     startDate: campaignStartOn,
     endDate: campaignEndOn,
     perDayLimit: 1,
-    totalLimit: 1,
+    totalLimit: 2,
   },
   {
     name: 'Nike shoes',
@@ -49,8 +50,8 @@ const rewardObjs: CreateRewardDto[] = [
   },
 ];
 
-async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(AppModule);
+async function seedDatabase(app: INestApplicationContext) {
+  console.log(`Seeding database started`);
 
   const playerService = app.get(PlayerService);
   const rewardService = app.get(RewardService);
@@ -63,7 +64,7 @@ async function bootstrap() {
     });
   }
 
-  // Create 5 rewards and coupons
+  // Create 5 rewards and its coupons
   for (let i = 0; i < rewardObjs.length; i++) {
     const reward = await rewardService.createReward(rewardObjs[i]);
 
@@ -73,6 +74,13 @@ async function bootstrap() {
     }
   }
 
+  console.log(`Seeding database completed`);
+}
+
+async function bootstrap() {
+  const app = await NestFactory.createApplicationContext(AppModule);
+  await seedDatabase(app);
   await app.close();
 }
+
 bootstrap();
