@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiTags } from '@nestjs/swagger';
 
-@Injectable()
-export class AppService {
+@ApiTags('Health')
+@Controller()
+export class IndexController {
   constructor(private configService: ConfigService) {}
 
-  getHealth() {
+  @Get()
+  index() {
     const appPort = this.configService.get('PORT');
 
     return {
