@@ -1,17 +1,18 @@
 import { registerAs } from '@nestjs/config';
 import { config as dotenvConfig } from 'dotenv';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { Player } from './entities/Player';
-import { Reward } from './entities/Reward';
-import { Coupon } from './entities/Coupon';
-import { PlayerCoupon } from './entities/PlayerCoupon';
+import { Player } from './player/entities/player.entity';
+import { Reward } from './coupon/entities/reward.entity';
+import { Coupon } from './coupon/entities/coupon.entity';
+import { PlayerCoupon } from './coupon/entities/player-coupon.entity';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 dotenvConfig({ path: '.env' });
 
-const config = {
+const config: TypeOrmModuleOptions = {
   type: 'mysql',
   host: `${process.env.TYPEORM_HOST}`,
-  port: `${process.env.TYPEORM_PORT}`,
+  port: +`${process.env.TYPEORM_PORT}`,
   username: `${process.env.TYPEORM_USERNAME}`,
   password: `${process.env.TYPEORM_PASSWORD}`,
   database: `${process.env.TYPEORM_DATABASE}`,
@@ -19,6 +20,7 @@ const config = {
   migrations: process.env.typeorm === 'true' ? ['migrations/*.ts'] : [],
   autoLoadEntities: true,
   synchronize: false,
+  timezone: 'Z',
 };
 
 export default registerAs('typeorm', () => config);

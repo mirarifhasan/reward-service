@@ -4,18 +4,18 @@ import {
   CreateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { Player } from './Player';
-import { Coupon } from './Coupon';
+import { Player } from '../../player/entities/player.entity';
+import { Coupon } from './coupon.entity';
 
 @Entity()
 export class PlayerCoupon {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Player)
+  @ManyToOne(() => Player, (player) => player.playerCoupons)
   player: Player;
 
-  @ManyToOne(() => Coupon)
+  @ManyToOne(() => Coupon, (coupon) => coupon.playerCoupons)
   coupon: Coupon;
 
   @CreateDateColumn()

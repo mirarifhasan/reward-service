@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Coupon } from './coupon.entity';
+
 @Entity()
 export class Reward {
   @PrimaryGeneratedColumn()
@@ -18,4 +20,7 @@ export class Reward {
 
   @Column()
   totalLimit: number;
+
+  @OneToMany(() => Coupon, (coupon) => coupon.reward)
+  coupons: Coupon[];
 }
