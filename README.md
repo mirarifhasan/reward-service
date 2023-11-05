@@ -5,6 +5,30 @@
 
 - Player can redeem coupons
 
+## 📖 API Documentation
+
+> http://localhost:3000/docs
+
+```
+POST http://localhost:3000/api/v1/coupon/coupon-redeem
+Request Body:
+{
+    "playerId": 1,
+    "rewardId": 1
+}
+
+Response Body: (200 Status Code)
+{
+  "status_code": 200,
+  "message": "Coupon redeemed successfully",
+  "errors": [],
+  "data": {
+    "id": 1,
+    "value": "CPN-Airline ticket-1"
+  }
+}
+```
+
 
 ## 🛠️ Installation
 
