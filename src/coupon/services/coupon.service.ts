@@ -43,6 +43,9 @@ export class CouponService {
 
   async getAvailableCouponOrThrow(rewardWithCoupons: Reward): Promise<Coupon> {
     const allCouponIds = rewardWithCoupons.coupons.map((coupon) => coupon.id);
+    if (allCouponIds.length === 0) {
+      throw new NotFoundException(COUPON_NOT_AVAILABLE);
+    }
     const redeemedPlayerCoupons =
       await this.getPlayerCouponsByCouponIds(allCouponIds);
 
