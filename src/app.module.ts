@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PlayerModule } from './player/player.module';
 import { CouponModule } from './coupon/coupon.module';
+import { IndexModule } from './index/index.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CouponModule } from './coupon/coupon.module';
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
     }),
+    IndexModule,
     PlayerModule,
     CouponModule,
   ],

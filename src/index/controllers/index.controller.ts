@@ -9,7 +9,7 @@ export class IndexController {
 
   @Get()
   index() {
-    const appPort = this.configService.get('PORT');
+    const appPort = this.configService.get('PORT') || 3000;
 
     return {
       message: `reward service is up and running!`,
