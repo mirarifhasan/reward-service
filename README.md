@@ -1,33 +1,49 @@
-## Software Engineer Backend Test 1
+<h1 align="center">Reward Service (Backend Implementation)</h1>
 
-## Installation
 
-```bash
-$ npm install
-```
+## 🌟 Features
 
-## Migration
+- Player can redeem coupons
 
-update your mysql config in `env` file
 
-```bash
-$ npm run migration:run
-```
+## 🛠️ Installation
 
-## Running the app
+1. Clone the repository:
 
-```bash
-# development
-$ npm run start
+    ```bash
+    $ git clone https://github.com/mirarifhasan/reward-service.git
+    ```
 
-# watch mode
-$ npm run start:dev
+2. Install the required packages:
 
-# production mode
-$ npm run start:prod
-```
+    ```bash
+    $ npm install
+    ```
 
-## Test
+3. Run database migration and Populate with initial dummy data
+    
+    > Update your `.env` file
+
+    ```bash
+    $ npm run migration:run
+    $ npm run cli:dev
+    ```
+
+4. Running the app
+
+    ```bash
+    # development mode
+    $ npm run start
+
+    # watch mode
+    $ npm run start:dev
+
+    # production mode
+    $ npm run start:prod
+    ```
+
+
+## ⚔️ Test
 
 ```bash
 # unit tests
