@@ -31,6 +31,10 @@ export class CouponService {
   async getPlayerCouponsByCouponIds(
     couponIds: number[],
   ): Promise<PlayerCoupon[]> {
+    if (couponIds.length === 0) {
+      return [];
+    }
+
     return await this.playerCouponRepository.find({
       where: {
         coupon: {
